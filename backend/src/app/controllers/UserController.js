@@ -70,9 +70,9 @@ class UserController {
       return res.json({ error: 'Password invalid' });
     }
 
-    const { id, name } = await user.update(req.body);
+    const { id, name, email: userEmail } = await user.update(req.body);
 
-    return res.json({ id, name, email });
+    return res.json({ id, name, email: userEmail });
   }
 }
 
