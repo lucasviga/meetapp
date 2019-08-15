@@ -1,4 +1,5 @@
 import * as Yup from 'yup';
+import { isPast } from 'date-fns';
 import Meetup from '../models/Meetup';
 // import User from '../models/User';
 
@@ -14,6 +15,10 @@ class MeetupController {
   }
 
   async store(req, res) {
+    /**
+     * Validacao
+     */
+
     const schema = Yup.object().shape({
       title: Yup.string().required(),
       description: Yup.string().required(),
@@ -31,6 +36,12 @@ class MeetupController {
     console.log(user);
 
     const { title, description, location, date, file_id } = req.body;
+
+    const datePast = isPast(date);
+
+    if (datePast) {
+      return res.json({ error: 'Esta data já passou' });
+    }
 
     const meetup = await Meetup.create({
       title,
